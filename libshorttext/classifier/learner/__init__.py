@@ -11,8 +11,8 @@ for efficiency.
 
 .. note::
 
-	If the data set is in text format, use :mod:`libshorttext.classfier`
-	rather than :mod:`learner`.
+    If the data set is in text format, use :mod:`libshorttext.classfier`
+    rather than :mod:`learner`.
 
 :mod:`learner` has three utility functions and one model class. If users 
 want to replace :mod:`learner` module by their own implementation, they need to

@@ -7,20 +7,20 @@ The standard method to get a :class:`TextModel` instance is via function
 :func:`train_text` or :func:`train_converted_text`, which trains
 text data (refer to :ref:`dataset`) or LIBSVM-format data, respectively. 
 
-	>>> from libshorttext.classifier import *
-	>>> # train a model and save it to a file
-	>>> m, svm_file = train_text('train_file')
-	>>> # save the model to a file
-	>>> m.save('model_path')
+    >>> from libshorttext.classifier import *
+    >>> # train a model and save it to a file
+    >>> m, svm_file = train_text('train_file')
+    >>> # save the model to a file
+    >>> m.save('model_path')
 
 After obtaining a :class:`TextModel`, users can use :func:`predict_text` or 
 :func:`predict_single_text` to predict the label of a new short text.
-	
-	>>> from libshorttext.classifier import *
-	>>> # load a model from a file
-	>>> m = TextModel('model_path')
-	>>> # predict a sentence
-	>>> result = predict_single_text('This is a sentence.', m) 
+
+    >>> from libshorttext.classifier import *
+    >>> # load a model from a file
+    >>> m = TextModel('model_path')
+    >>> # predict a sentence
+    >>> result = predict_single_text('This is a sentence.', m)
 
 Another class in module :mod:`classifier` is :class:`PredictionResult`, which is a
 wrapper of prediction results. Both :func:`predict_text` and 

@@ -422,10 +422,10 @@ void stemfile(struct stemmer * z, FILE * f)
 
 
 int trim(char* src){
-	
-	struct stemmer z;
-	int len = strlen(src);
-	return stem(&z,src,len-1) + 1;
+
+    struct stemmer z;
+    int len = strlen(src);
+    return stem(&z,src,len-1) + 1;
 }
 /*
 int main(int argc, char * argv[])

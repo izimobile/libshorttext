@@ -26,15 +26,15 @@ typedef INT64 mwIndex;
 
 void exit_with_help()
 {
-	mexPrintf(
-	"Usage: [label_vector, instance_matrix] = libsvmread('filename');\n"
-	);
+    mexPrintf(
+    "Usage: [label_vector, instance_matrix] = libsvmread('filename');\n"
+    );
 }
 
 static void fake_answer(mxArray *plhs[])
 {
-	plhs[0] = mxCreateDoubleMatrix(0, 0, mxREAL);
-	plhs[1] = mxCreateDoubleMatrix(0, 0, mxREAL);
+    plhs[0] = mxCreateDoubleMatrix(0, 0, mxREAL);
+    plhs[1] = mxCreateDoubleMatrix(0, 0, mxREAL);
 }
 
 static char *line;
@@ -42,177 +42,177 @@ static INT64 max_line_len;
 
 static char* readline(FILE *input)
 {
-	INT64 len;
-	
-	if(fgets(line,max_line_len,input) == NULL)
-		return NULL;
+    INT64 len;
 
-	while(strrchr(line,'\n') == NULL)
-	{
-		max_line_len *= 2;
-		line = (char *) realloc(line, max_line_len);
-		len = (INT64) strlen(line);
-		if(fgets(line+len,max_line_len-len,input) == NULL)
-			break;
-	}
-	return line;
+    if(fgets(line,max_line_len,input) == NULL)
+        return NULL;
+
+    while(strrchr(line,'\n') == NULL)
+    {
+        max_line_len *= 2;
+        line = (char *) realloc(line, max_line_len);
+        len = (INT64) strlen(line);
+        if(fgets(line+len,max_line_len-len,input) == NULL)
+            break;
+    }
+    return line;
 }
 
 // read in a problem (in libsvm format)
 void read_problem(const char *filename, mxArray *plhs[])
 {
-	INT64 max_index, min_index, inst_max_index, i;
-	long elements, k;
-	FILE *fp = fopen(filename,"r");
-	INT64 l = 0;
-	char *endptr;
-	mwIndex *ir, *jc;
-	double *labels, *samples;
-	
-	if(fp == NULL)
-	{
-		mexPrintf("can't open input file %s\n",filename);
-		fake_answer(plhs);
-		return;
-	}
+    INT64 max_index, min_index, inst_max_index, i;
+    long elements, k;
+    FILE *fp = fopen(filename,"r");
+    INT64 l = 0;
+    char *endptr;
+    mwIndex *ir, *jc;
+    double *labels, *samples;
 
-	max_line_len = 1024;
-	line = (char *) malloc(max_line_len*sizeof(char));
+    if(fp == NULL)
+    {
+        mexPrintf("can't open input file %s\n",filename);
+        fake_answer(plhs);
+        return;
+    }
 
-	max_index = 0;
-	min_index = 1; // our index starts from 1
-	elements = 0;
-	while(readline(fp) != NULL)
-	{
-		char *idx, *val;
-		// features
-		INT64 index = 0;
+    max_line_len = 1024;
+    line = (char *) malloc(max_line_len*sizeof(char));
 
-		inst_max_index = -1; // strtol gives 0 if wrong format, and precomputed kernel has <index> start from 0
-		strtok(line," \t"); // label
-		while (1)
-		{
-			idx = strtok(NULL,":"); // index:value
-			val = strtok(NULL," \t");
-			if(val == NULL)
-				break;
+    max_index = 0;
+    min_index = 1; // our index starts from 1
+    elements = 0;
+    while(readline(fp) != NULL)
+    {
+        char *idx, *val;
+        // features
+        INT64 index = 0;
 
-			errno = 0;
-			index = (INT64) strtoll(idx,&endptr,10);
-			if(endptr == idx || errno != 0 || *endptr != '\0' || index <= inst_max_index)
-			{
-				mexPrintf("Wrong input format at line %lld\n",(long long int)l+1);
-				fake_answer(plhs);
-				return;
-			}
-			else
-				inst_max_index = index;
+        inst_max_index = -1; // strtol gives 0 if wrong format, and precomputed kernel has <index> start from 0
+        strtok(line," \t"); // label
+        while (1)
+        {
+            idx = strtok(NULL,":"); // index:value
+            val = strtok(NULL," \t");
+            if(val == NULL)
+                break;
 
-			min_index = min(min_index, index);
-			elements++;
-		}
-		max_index = max(max_index, inst_max_index);
-		l++;
-	}
-	rewind(fp);
+            errno = 0;
+            index = (INT64) strtoll(idx,&endptr,10);
+            if(endptr == idx || errno != 0 || *endptr != '\0' || index <= inst_max_index)
+            {
+                mexPrintf("Wrong input format at line %lld\n",(long long int)l+1);
+                fake_answer(plhs);
+                return;
+            }
+            else
+                inst_max_index = index;
 
-	// y
-	plhs[0] = mxCreateDoubleMatrix(l, 1, mxREAL);
-	// x^T
-	if (min_index <= 0)
-		plhs[1] = mxCreateSparse(max_index-min_index+1, l, elements, mxREAL);
-	else
-		plhs[1] = mxCreateSparse(max_index, l, elements, mxREAL);
+            min_index = min(min_index, index);
+            elements++;
+        }
+        max_index = max(max_index, inst_max_index);
+        l++;
+    }
+    rewind(fp);
 
-	labels = mxGetPr(plhs[0]);
-	samples = mxGetPr(plhs[1]);
-	ir = mxGetIr(plhs[1]);
-	jc = mxGetJc(plhs[1]);
+    // y
+    plhs[0] = mxCreateDoubleMatrix(l, 1, mxREAL);
+    // x^T
+    if (min_index <= 0)
+        plhs[1] = mxCreateSparse(max_index-min_index+1, l, elements, mxREAL);
+    else
+        plhs[1] = mxCreateSparse(max_index, l, elements, mxREAL);
 
-	k=0;
-	for(i=0;i<l;i++)
-	{
-		char *idx, *val, *label;
-		jc[i] = k;
+    labels = mxGetPr(plhs[0]);
+    samples = mxGetPr(plhs[1]);
+    ir = mxGetIr(plhs[1]);
+    jc = mxGetJc(plhs[1]);
 
-		readline(fp);
+    k=0;
+    for(i=0;i<l;i++)
+    {
+        char *idx, *val, *label;
+        jc[i] = k;
 
-		label = strtok(line," \t\n");
-		if(label == NULL)
-		{
-			mexPrintf("Empty line at line %lld\n",(long long int)(i+1));
-			fake_answer(plhs);
-			return;
-		}
-		labels[i] = strtod(label,&endptr);
-		if(endptr == label || *endptr != '\0')
-		{
-			mexPrintf("Wrong input format at line %lld\n",(long long int)(i+1));
-			fake_answer(plhs);
-			return;
-		}
+        readline(fp);
 
-		// features
-		while(1)
-		{
-			idx = strtok(NULL,":");
-			val = strtok(NULL," \t");
-			if(val == NULL)
-				break;
+        label = strtok(line," \t\n");
+        if(label == NULL)
+        {
+            mexPrintf("Empty line at line %lld\n",(long long int)(i+1));
+            fake_answer(plhs);
+            return;
+        }
+        labels[i] = strtod(label,&endptr);
+        if(endptr == label || *endptr != '\0')
+        {
+            mexPrintf("Wrong input format at line %lld\n",(long long int)(i+1));
+            fake_answer(plhs);
+            return;
+        }
 
-			ir[k] = (mwIndex) (strtol(idx,&endptr,10) - min_index); // precomputed kernel has <index> start from 0
+        // features
+        while(1)
+        {
+            idx = strtok(NULL,":");
+            val = strtok(NULL," \t");
+            if(val == NULL)
+                break;
 
-			errno = 0;
-			samples[k] = strtod(val,&endptr);
-			if (endptr == val || errno != 0 || (*endptr != '\0' && !isspace(*endptr)))
-			{
-				mexPrintf("Wrong input format at line %lld\n",(long long int)(i+1));
-				fake_answer(plhs);
-				return;
-			}
-			++k;
-		}
-	}
-	jc[l] = k;
+            ir[k] = (mwIndex) (strtol(idx,&endptr,10) - min_index); // precomputed kernel has <index> start from 0
 
-	fclose(fp);
-	free(line);
+            errno = 0;
+            samples[k] = strtod(val,&endptr);
+            if (endptr == val || errno != 0 || (*endptr != '\0' && !isspace(*endptr)))
+            {
+                mexPrintf("Wrong input format at line %lld\n",(long long int)(i+1));
+                fake_answer(plhs);
+                return;
+            }
+            ++k;
+        }
+    }
+    jc[l] = k;
 
-	{
-		mxArray *rhs[1], *lhs[1];
-		rhs[0] = plhs[1];
-		if(mexCallMATLAB(1, lhs, 1, rhs, "transpose"))
-		{
-			mexPrintf("Error: cannot transpose problem\n");
-			fake_answer(plhs);
-			return;
-		}
-		plhs[1] = lhs[0];
-	}
+    fclose(fp);
+    free(line);
+
+    {
+        mxArray *rhs[1], *lhs[1];
+        rhs[0] = plhs[1];
+        if(mexCallMATLAB(1, lhs, 1, rhs, "transpose"))
+        {
+            mexPrintf("Error: cannot transpose problem\n");
+            fake_answer(plhs);
+            return;
+        }
+        plhs[1] = lhs[0];
+    }
 }
 
 void mexFunction( int nlhs, mxArray *plhs[],
-		int nrhs, const mxArray *prhs[] )
+        int nrhs, const mxArray *prhs[] )
 {
-	if(nrhs == 1)
-	{
-		char filename[256];
+    if(nrhs == 1)
+    {
+        char filename[256];
 
-		mxGetString(prhs[0], filename, mxGetN(prhs[0]) + 1);
+        mxGetString(prhs[0], filename, mxGetN(prhs[0]) + 1);
 
-		if(filename == NULL)
-		{
-			mexPrintf("Error: filename is NULL\n");
-			return;
-		}
+        if(filename == NULL)
+        {
+            mexPrintf("Error: filename is NULL\n");
+            return;
+        }
 
-		read_problem(filename, plhs);
-	}
-	else
-	{
-		exit_with_help();
-		fake_answer(plhs);
-		return;
-	}
+        read_problem(filename, plhs);
+    }
+    else
+    {
+        exit_with_help();
+        fake_answer(plhs);
+        return;
+    }
 }
 
