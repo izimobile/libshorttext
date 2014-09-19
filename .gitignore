@@ -1,0 +1,13 @@
+// Ignore files created after make
+*.a
+*.o
+*.so.1
+__init__.py
+demo/predict_result
+demo/test_file.svm
+demo/train_file.model/
+demo/train_file.svm
+libshorttext/classifier/learner/test
+libshorttext/classifier/learner/liblinear/predict
+libshorttext/classifier/learner/liblinear/train
+
