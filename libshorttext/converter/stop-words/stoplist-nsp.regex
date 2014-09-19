@@ -1,8 +1,6 @@
 @stop.mode=OR
 /\b[a-zA-Z]\b/
-/\b[aA]board\b/
 /\b[aA]bout\b/
-/\b[aA]bove\b/
 /\b[aA]cross\b/
 /\b[aA]fter\b/
 /\b[aA]gain\b/
@@ -35,7 +33,6 @@
 /\b[aA]ught\b/
 /\b[aA]way\b/
 /\b[bB]ack\b/
-/\b[bB]ar\b/
 /\b[bB]arring\b/
 /\b[bB]e\b/
 /\b[bB]ecause\b/
@@ -43,7 +40,6 @@
 /\b[bB]ecomes\b/
 /\b[bB]ecoming\b/
 /\b[bB]een\b/
-/\b[bB]efore\b/
 /\b[bB]ehind\b/
 /\b[bB]eing\b/
 /\b[bB]elow\b/
@@ -74,7 +70,6 @@
 /\b[dD]oes\b/
 /\b[dD]oing\b/
 /\b[dD]one\b/
-/\b[dD]ont\b/
 /\b[dD]own\b/
 /\b[dD]r\b/
 /\b[dD]uring\b/
@@ -110,7 +105,6 @@
 /\b[fF]rom\b/
 /\b[gG]et\b/
 /\b[gG]ive\b/
-/\b[gG]o\b/
 /\b[gG]oing\b/
 /\b[gG]ood\b/
 /\b[gG]ot\b/
@@ -136,13 +130,11 @@
 /\b[iI]f\b/
 /\b[iI]i\b/
 /\b[iI]ii\b/
-/\b[iI]lk\b/
 /\b[iI]n\b/
 /\b[iI]nclude\b/
 /\b[iI]ncluded\b/
 /\b[iI]ncluding\b/
 /\b[iI]ndeed\b/
-/\b[iI]nside\b/
 /\b[iI]nstead\b/
 /\b[iI]nto\b/
 /\b[iI]s\b/
@@ -154,16 +146,10 @@
 /\b[jJ]ust\b/
 /\b[kK]ept\b/
 /\b[kK]now\b/
-/\b[lL]ast\b/
-/\b[lL]ate\b/
-/\b[lL]ater\b/
 /\b[lL]ess\b/
 /\b[lL]et\b/
 /\b[lL]ike\b/
 /\b[lL]ittle\b/
-/\b[mM]ade\b/
-/\b[mM]ake\b/
-/\b[mM]aking\b/
 /\b[mM]any\b/
 /\b[mM]ay\b/
 /\b[mM]e\b/
@@ -181,13 +167,10 @@
 /\b[mM]y\b/
 /\b[mM]yself\b/
 /\b[nN]aught\b/
-/\b[nN]ear\b/
 /\b[nN]eeded\b/
 /\b[nN]eeds\b/
 /\b[nN]either\b/
 /\b[nN]ever\b/
-/\b[nN]ew\b/
-/\b[nN]ext\b/
 /\b[nN]hs\b/
 /\b[nN]ine\b/
 /\b[nN]ineteen\b/
@@ -243,7 +226,6 @@
 /\b[rR]elate\b/
 /\b[rR]ound\b/
 /\b[sS]aid\b/
-/\b[sS]ave\b/
 /\b[sS]aw\b/
 /\b[sS]ay\b/
 /\b[sS]ays\b/
@@ -290,7 +272,6 @@
 /\b[tT]hem\b/
 /\b[tT]hemselves\b/
 /\b[tT]hen\b/
-/\b[tT]hen\b/
 /\b[tT]here\b/
 /\b[tT]hey\b/
 /\b[tT]hine\b/
@@ -302,7 +283,6 @@
 /\b[tT]hough\b/
 /\b[tT]hree\b/
 /\b[tT]hrice\b/
-/\b[tT]hrough\b/
 /\b[tT]hroughout\b/
 /\b[tT]hus\b/
 /\b[tT]hyself\b/
@@ -318,7 +298,6 @@
 /\b[tT]wenty\b/
 /\b[tT]wice\b/
 /\b[tT]wo\b/
-/\b[uU]nder\b/
 /\b[uU]nderneath\b/
 /\b[uU]nless\b/
 /\b[uU]nlike\b/
@@ -353,8 +332,6 @@
 /\b[wW]hatall\b/
 /\b[wW]hatever\b/
 /\b[wW]hatsoever\b/
-/\b[wW]hen\b/
-/\b[wW]here\b/
 /\b[wW]hereas\b/
 /\b[wW]hereby\b/
 /\b[wW]herewith\b/
@@ -388,6 +365,7 @@
 /\b[yY]onder\b/
 /\b[yY]ou\b/
 /\b[yY]ou-all\b/
+/\b[yY]'?all\b/
 /\b[yY]our\b/
 /\b[yY]ours\b/
 /\b[yY]ourself\b/
