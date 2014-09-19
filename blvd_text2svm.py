@@ -1,7 +1,3 @@
-import os
-import re
-import unicodedata
-
 from libshorttext.converter import *
 
 
@@ -58,9 +54,9 @@ text_converter = Text2svmConverter('-stopword 1 -stemming 1')
 text_converter.text_prep.tokenizer = tokenizer
 
 
-def process():
+def process(source, output):
     os.chdir(os.path.dirname(__file__))
-    convert_text('training_data/post_sale,event,food,info', text_converter, 'outputs/test1.svm')
+    convert_text(source, text_converter, output)
     text_converter.save('outputs/test1.text_converter')
 
-process()
+process('training_data/post_sale,event,food,info', 'outputs/test1.svm')
