@@ -11,3 +11,6 @@ libshorttext/classifier/learner/test
 libshorttext/classifier/learner/liblinear/predict
 libshorttext/classifier/learner/liblinear/train
 
+// Ignore outputs & such
+outputs/
+training_data/
