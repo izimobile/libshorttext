@@ -36,11 +36,14 @@ def tokenizer(text):
         else:
             return input_text
 
-    def trim_digits(input_text):
-        return re.sub(r'\d+', r'#', input_text)
-
     def trim_spaces(input_text):
         return re.sub(r'\s+', r' ', input_text)
+
+    def replace_special(input_text):
+        input_text = re.sub(r'\d+', r'number', input_text)
+        input_text = re.sub(r'\$', r'dolsign', input_text)
+        input_text = re.sub(r'%', r'percent', input_text)
+        return re.sub(r'/', r'slash', input_text)
 
     text = unicodedata.normalize('NFD', unicode(text, 'utf-8'))
     text = trim_links(text)
@@ -48,8 +51,8 @@ def tokenizer(text):
     text = trim_hashtags(text)
     text = re.sub(r'([a-z])([0-9])', r'\1 \2', text)
     text = re.sub(r'([0-9])([a-z])', r'\1 \2', text)
-    text = trim_digits(text)
     text = trim_spaces(text)
+    text = replace_special(text)
     return text.strip().lower().split()
 
 
