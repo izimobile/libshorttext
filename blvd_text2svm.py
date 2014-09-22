@@ -2,6 +2,8 @@ from libshorttext.converter import *
 
 
 def tokenizer(text):
+    import re
+    import unicodedata
 
     def trim_links(input_text):
         input_text = re.sub(r' (http|www|t\.co).*?(?: |$)', '', input_text)
@@ -50,12 +52,12 @@ def tokenizer(text):
     text = trim_spaces(text)
     return text.strip().lower().split()
 
-text_converter = Text2svmConverter('-stopword 1 -stemming 1')
-text_converter.text_prep.tokenizer = tokenizer
-
 
 def process(source, output):
+    import os
     os.chdir(os.path.dirname(__file__))
+    text_converter = Text2svmConverter('-stopword 1 -stemming 1')
+    text_converter.text_prep.tokenizer = tokenizer
     convert_text(source, text_converter, output)
     text_converter.save('outputs/test1.text_converter')
 
