@@ -64,4 +64,4 @@ def process(source, output):
     convert_text(source, text_converter, output)
     text_converter.save('outputs/test1.text_converter')
 
-# process('training_data/post_sale,event,food,info', 'outputs/test1.svm')
+# process('training_data/post_sale,event,food,info,hours,skipped', 'outputs/test1.svm')
