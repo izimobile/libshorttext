@@ -14,7 +14,7 @@ def tokenizer(text):
             return ''
         if c.isdigit() or c.isalpha() or c.isspace():
             return c
-        if re.match(r'[#$/\-_]', c):
+        if re.match(r'[#\$%/\-_]', c):
             return c
         else:
             return ''
