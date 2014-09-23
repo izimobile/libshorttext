@@ -1,7 +1,7 @@
 from libshorttext.converter import *
 
 
-def tokenizer(text):
+def tokenize(text):
     import re
     import unicodedata
 
@@ -60,7 +60,7 @@ def process(source, svm_out, convert_out):
     import os
     os.chdir(os.path.dirname(__file__))
     text_converter = Text2svmConverter('-stopword 1 -stemming 1')
-    text_converter.text_prep.tokenizer = tokenizer
+    text_converter.text_prep.tokenizer = tokenize
     convert_text(source, text_converter, svm_out)
     if convert_out:
         text_converter.save(convert_out)
