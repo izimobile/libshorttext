@@ -56,12 +56,15 @@ def tokenizer(text):
     return text.strip().lower().split()
 
 
-def process(source, output):
+def process(source, svm_out, convert_out):
     import os
     os.chdir(os.path.dirname(__file__))
     text_converter = Text2svmConverter('-stopword 1 -stemming 1')
     text_converter.text_prep.tokenizer = tokenizer
-    convert_text(source, text_converter, output)
-    text_converter.save('outputs/test1.text_converter')
+    convert_text(source, text_converter, svm_out)
+    if convert_out:
+        text_converter.save(convert_out)
 
-# process('training_data/post_sale,event,food,info,hours,skipped', 'outputs/test1.svm')
+# process('training_data/post_sale,event,food,info,hours,skipped',
+#         'outputs/test1.svm',
+#         'outputs/test1.text_converter')
