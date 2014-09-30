@@ -38,7 +38,7 @@ class BlvdAnalyzer():
         word_idx = indices[token_idx]
         word = word_list[word_idx]
 
-        return json.dumps({'relevant_word': word, 'tag': label})
+        return json.dumps({'relWord': word, 'tag': label})
 
 import zerorpc
 
