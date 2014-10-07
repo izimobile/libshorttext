@@ -6,6 +6,11 @@ from libshorttext.classifier import *
 
 analyzer = Analyzer('outputs/test1.model')
 
+import zerorpc
+
+import logging
+logging.basicConfig()
+
 
 class BlvdAnalyzer():
 
@@ -39,8 +44,6 @@ class BlvdAnalyzer():
         word = word_list[word_idx]
 
         return json.dumps({'relWord': word, 'tag': label})
-
-import zerorpc
 
 s = zerorpc.Server(BlvdAnalyzer())
 s.bind('tcp://0.0.0.0:4241')
