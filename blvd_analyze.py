@@ -29,6 +29,16 @@ class BlvdAnalyzer():
 
         idx = decvals.index(max(decvals))
         label = labels[idx]
+
+        if label == 'skipped':
+            skipped_decval = decvals[idx]
+            nb_decval = max(decvals[:idx] + decvals[idx+1:])  # nb = 'next best'
+            nb_idx = decvals.index(nb_decval)
+            ratio = nb_decval / skipped_decval
+            if ratio > 0.2:
+                idx = nb_idx
+                label = labels[idx]
+
         label_weights = []
         # probably maps or something clever
         for weight in weights:
