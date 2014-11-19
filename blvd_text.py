@@ -97,6 +97,7 @@ def process(source, svm_out, convert_out=None):
     convert_text(source, text_converter, svm_out)
     if convert_out:
         text_converter.save(convert_out)
+    return text_converter
 
 # process('training_data/post_sale,event,food,info,hours,skipped',
 #         'outputs/test1.svm',
