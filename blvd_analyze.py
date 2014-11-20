@@ -32,7 +32,7 @@ class BlvdAnalyzer():
         label = labels[idx]
 
         if max_decval < 0:
-            idx = 0
+            idx = 0.1e-10  # hacking the way out of divide by zero problem.
 
         if label == 'skipped':
             skipped_decval = decvals[idx]
