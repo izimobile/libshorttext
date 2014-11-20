@@ -27,8 +27,12 @@ class BlvdAnalyzer():
         decvals = prediction_res.decvals
         features, weights, labels = analyzer.model.get_weight(str(text))
 
-        idx = decvals.index(max(decvals))
+        max_decval = max(decvals)
+        idx = decvals.index(max_decval)
         label = labels[idx]
+
+        if max_decval < 0:
+            idx = 0
 
         if label == 'skipped':
             skipped_decval = decvals[idx]
