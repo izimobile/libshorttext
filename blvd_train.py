@@ -22,4 +22,4 @@ def convert_and_train(name, source):
     train(name, svm_path, converter)
 
 # ex
-# convert_and_train('test2', './training_data/post_sale,event,food,info,hours,skipped')
+# convert_and_train('0.0.3', './training_data/td_cat')
