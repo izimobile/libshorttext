@@ -29,7 +29,9 @@ class BlvdAnalyzer():
 
         if positives:
             self.result_data = map(self.map_result_data, positives)
-            sorted(self.result_data, cmp=lambda x, y: cmp(x['weight'], y['weight']))
+            self.result_data = sorted(self.result_data,
+                                      cmp=lambda x, y: cmp(x['weight'], y['weight']),
+                                      reverse=True)
 
             skipped = [i for i in self.result_data if i['label'] == 'skipped']
 
