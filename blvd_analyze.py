@@ -36,6 +36,8 @@ class BlvdAnalyzer():
             if skipped:
                 self.handle_skipped(skipped)
 
+            self.check_dupes()
+
         else:
             self.result_data = 'skipped'
 
