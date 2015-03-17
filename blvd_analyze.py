@@ -32,7 +32,7 @@ class BlvdAnalyzer():
         label = labels[idx]
 
         if max_decval <= 0:
-            idx = 0.1e-10  # hacking the way out of divide by zero problem.
+            decvals[idx] = 0.1e-10  # hacking the way out of divide by zero problem.
 
         if label == 'skipped':
             skipped_decval = decvals[idx]
@@ -50,6 +50,7 @@ class BlvdAnalyzer():
         if label_weights:
             feature_idx = label_weights.index(max(label_weights))
             feature = features[feature_idx]
+            token_idx = None
             try:
                 token_idx = tokens.index(feature)
             except ValueError:
@@ -62,7 +63,7 @@ class BlvdAnalyzer():
 
             return json.dumps({'relWord': word, 'tag': label})
         else:
-            return None
+            return json.dumps({'relWord': None, 'tag': 'skipped'})
 
 s = zerorpc.Server(BlvdAnalyzer())
 s.bind('tcp://0.0.0.0:4241')
