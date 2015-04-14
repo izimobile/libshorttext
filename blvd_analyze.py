@@ -65,6 +65,6 @@ class BlvdAnalyzer():
         else:
             return json.dumps({'relWord': None, 'tag': 'skipped'})
 
-s = zerorpc.Server(BlvdAnalyzer())
+s = zerorpc.Server(BlvdAnalyzer(), heartbeat=None)
 s.bind('tcp://0.0.0.0:4241')
 s.run()
