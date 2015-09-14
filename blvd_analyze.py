@@ -34,14 +34,14 @@ class BlvdAnalyzer():
         if max_decval <= 0:
             decvals[idx] = 0.1e-10  # hacking the way out of divide by zero problem.
 
-        if label == 'skipped':
-            skipped_decval = decvals[idx]
-            nb_decval = max(decvals[:idx] + decvals[idx+1:])  # nb = 'next best'
-            nb_idx = decvals.index(nb_decval)
-            ratio = nb_decval / skipped_decval
-            if ratio > 0.2:
-                idx = nb_idx
-                label = labels[idx]
+        # if label == 'skipped':
+        #     skipped_decval = decvals[idx]
+        #     nb_decval = max(decvals[:idx] + decvals[idx+1:])  # nb = 'next best'
+        #     nb_idx = decvals.index(nb_decval)
+        #     ratio = nb_decval / skipped_decval
+        #     if ratio > 0.2:
+        #         idx = nb_idx
+        #         label = labels[idx]
 
         label_weights = []
         # probably maps or something clever
