@@ -22,4 +22,4 @@ def convert_and_train(name, source):
     train(name, svm_path, converter)
 
 # ex
-# convert_and_train('0.1.1', './training_data/post_1443559192553')
+# convert_and_train('15.8.19', './training_data/post_1445262321513');
