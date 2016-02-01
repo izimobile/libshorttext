@@ -6,7 +6,7 @@ import json
 from libshorttext.analyzer import *
 from libshorttext.classifier import *
 
-analyzer = Analyzer('outputs/15.12.14.model')
+analyzer = Analyzer('outputs/16.2.1.model')
 
 import zerorpc
 
