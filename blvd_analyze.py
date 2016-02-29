@@ -20,7 +20,7 @@ class BlvdAnalyzer():
         self.is_currently_useless = True
 
     @staticmethod
-    def run(text):
+    def classify(text):
         tokens, indices, word_list = blvd_text.tokenize_with_indices(text)
         text = ' '.join(tokens)
         prediction_res = predict_single_text(str(text), analyzer.model)
@@ -64,6 +64,9 @@ class BlvdAnalyzer():
             return json.dumps({'relWord': word, 'tag': label})
         else:
             return json.dumps({'relWord': None, 'tag': 'skipped'})
+
+    def classify_bulk(self, texts):
+        return map(self.classify, texts)
 
 s = zerorpc.Server(BlvdAnalyzer(), heartbeat=None)
 s.bind('tcp://0.0.0.0:4241')
