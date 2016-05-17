@@ -1,31 +1,32 @@
 # coding=utf-8
 
 import blvd_text
-import json
+import time
+import tagRpc_pb2
 
 from libshorttext.analyzer import *
 from libshorttext.classifier import *
+from functools import partial
+
+import logging
+import traceback
+
+logging.basicConfig()
+
+_ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 analyzer = Analyzer('outputs/16.2.1-2.model')
 
-import zerorpc
 
-import logging
-logging.basicConfig()
-
-
-class BlvdAnalyzer():
-
-    def __init__(self):
-        self.is_currently_useless = True
-
+class TagRpc(tagRpc_pb2.BetaTagRpcServicer):
     @staticmethod
-    def run(text):
-        tokens, indices, word_list = blvd_text.tokenize_with_indices(text)
-        text = ' '.join(tokens)
-        prediction_res = predict_single_text(str(text), analyzer.model)
+    def classify(reply, _message):
+        message = _message.encode('utf8')
+        tokens, indices, word_list = blvd_text.tokenize_with_indices(message)
+        message = ' '.join(tokens)
+        prediction_res = predict_single_text(str(message), analyzer.model)
         decvals = prediction_res.decvals
-        features, weights, labels = analyzer.model.get_weight(str(text))
+        features, weights, labels = analyzer.model.get_weight(str(message))
 
         max_decval = max(decvals)
         idx = decvals.index(max_decval)
@@ -44,7 +45,6 @@ class BlvdAnalyzer():
         #         label = labels[idx]
 
         label_weights = []
-        # probably maps or something clever
         for weight in weights:
             label_weights.append(weight[idx])
         if label_weights:
@@ -61,13 +61,31 @@ class BlvdAnalyzer():
             word_idx = indices[token_idx]
             word = word_list[word_idx]
 
-            return json.dumps({'relWord': word, 'tag': label})
+            reply.results.add(relWord=word, tag=label)
         else:
-            return json.dumps({'relWord': None, 'tag': 'skipped'})
+            reply.results.add(tag='skipped')
 
-    def classify_bulk(self, texts):
-        return map(self.run, texts)
+    def ClassifyBulk(self, request, context):
+        try:
+            reply = tagRpc_pb2.TagRpcReply()
+            classify = partial(self.classify, reply)
+            map(classify, request.messages)
+            return reply
+        except Exception as e:
+            print(traceback.format_exc())
+            # this is taken from https://github.com/grpc/grpc/issues/3436;
+            # however, it does not seem to work.
+            context.details('An exception with message "%s" was raised!', e.message)
+            context.code(tagRpc_pb2.beta_interfaces.StatusCode.INTERNAL)
+            return tagRpc_pb2.TagRpcReply()
 
-s = zerorpc.Server(BlvdAnalyzer(), heartbeat=None)
-s.bind('tcp://0.0.0.0:4241')
-s.run()
+
+server = tagRpc_pb2.beta_create_TagRpc_server(TagRpc())
+server.add_insecure_port('[::]:4241')
+server.start()
+
+try:
+    while True:
+        time.sleep(_ONE_DAY_IN_SECONDS)
+except KeyboardInterrupt:
+    server.stop(0)
